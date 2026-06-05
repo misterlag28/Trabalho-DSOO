@@ -1,26 +1,43 @@
 from Pagamento import Pagamento
-from datetime import date
-
 
 class Pix(Pagamento):
 
     def __init__(
         self,
-        data: date,
-        valor_pago: float,
+        data,
+        valor_pago,
         cpf_pagador: str
     ):
+
         super().__init__(data, valor_pago)
+
+        if len(cpf_pagador) != 11:
+            raise ValueError("CPF inválido.")
+
+        self.__cpf_pagador = cpf_pagador
+
+    # GETTER
+
+    def get_cpf_pagador(self):
+        return self.__cpf_pagador
+
+    # SETTER
+
+    def set_cpf_pagador(self, cpf_pagador: str):
+
+        if len(cpf_pagador) != 11:
+            raise ValueError("CPF inválido.")
 
         self.__cpf_pagador = cpf_pagador
 
     def tipo_pagamento(self):
-        return "Pix"
+        return "PIX"
 
-    # GETTERS
-    def get_cpf_pagador(self):
-        return self.__cpf_pagador
+    def validar(self):
 
-    # SETTERS
-    def set_cpf_pagador(self, cpf_pagador: str):
-        self.__cpf_pagador = cpf_pagador
+        super().validar()
+
+        if len(self.__cpf_pagador) != 11:
+            raise ValueError("CPF inválido.")
+
+        return True
