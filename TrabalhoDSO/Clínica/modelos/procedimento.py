@@ -1,38 +1,53 @@
 from modelos.profissional_saude import ProfissionalSaude
 
-
 class Procedimento:
 
-    def __init__(
-        self,
-        descricao: str,
-        custo: float,
-        profissional: ProfissionalSaude
-    ):
+    def __init__(self, descricao: str, custo: float):
+
+        if descricao.strip() == "":
+            raise ValueError("Descrição inválida.")
+
+        if custo < 0:
+            raise ValueError("O custo não pode ser negativo.")
+
         self.__descricao = descricao
         self.__custo = custo
-        self.__profissional = profissional
 
-    @property
-    def descricao(self):
+        self.profissional = None
+        self.atendimentos = []
+
+    # GETTERS
+
+    def get_descricao(self):
         return self.__descricao
 
-    @descricao.setter
-    def descricao(self, descricao: str):
-        self.__descricao = descricao
-
-    @property
-    def custo(self):
+    def get_custo(self):
         return self.__custo
 
-    @custo.setter
-    def custo(self, custo: float):
+    # SETTERS
+
+    def set_descricao(self, descricao: str):
+
+        if descricao.strip() == "":
+            raise ValueError("Descrição inválida.")
+
+        self.__descricao = descricao
+
+    def set_custo(self, custo: float):
+
+        if custo < 0:
+            raise ValueError("O custo não pode ser negativo.")
+
         self.__custo = custo
 
-    @property
-    def profissional(self):
-        return self.__profissional
+    # MÉTODO
 
-    @profissional.setter
-    def profissional(self, profissional: ProfissionalSaude):
-        self.__profissional = profissional
+    def validar(self):
+
+        if self.__descricao.strip() == "":
+            raise ValueError("Descrição inválida.")
+
+        if self.__custo < 0:
+            raise ValueError("Custo inválido.")
+
+        return True
