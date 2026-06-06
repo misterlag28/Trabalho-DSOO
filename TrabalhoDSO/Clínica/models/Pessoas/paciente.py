@@ -1,4 +1,4 @@
-from Pessoa import Pessoa
+from ..pessoa import Pessoa
 
 
 class Paciente(Pessoa):
@@ -21,10 +21,12 @@ class Paciente(Pessoa):
     def tipo_pessoa(self):
         return "Paciente"
 
-    # GETTERS
-    def get_idade(self):
+    @property
+    def idade(self):
         return self.__idade
 
-    # SETTERS
-    def set_idade(self, idade: int):
+    @idade.setter
+    def idade(self, idade: int):
+        if idade < 0:
+            raise ValueError("Idade não pode ser negativa.")
         self.__idade = idade

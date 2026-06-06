@@ -1,9 +1,9 @@
 from datetime import date, time
 
-from modelos.clinica import Clinica
-from modelos.paciente import Paciente
-from modelos.profissional_saude import ProfissionalSaude
-from modelos.procedimento import Procedimento
+from .clinica import Clinica
+from .Pessoas.paciente import Paciente
+from .Pessoas.profissional_saude import ProfissionalSaude
+from .procedimento import Procedimento
 from enums.tipo_atendimento import TipoAtendimento
 
 

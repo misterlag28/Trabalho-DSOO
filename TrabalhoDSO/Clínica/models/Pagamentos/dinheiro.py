@@ -1,4 +1,4 @@
-from Pagamento import Pagamento
+from models.pagamento import Pagamento
 
 
 class Dinheiro(Pagamento):
