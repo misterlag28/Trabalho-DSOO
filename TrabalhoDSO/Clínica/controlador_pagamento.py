@@ -1,7 +1,7 @@
 from datetime import date
-from dinheiro import Dinheiro
-from pix import Pix
-from cartao_credito import CartaoCredito
+from pagamentos.dinheiro import Dinheiro
+from pagamentos.pix import Pix
+from pagamentos.cartao_credito import CartaoCredito
 
 class ControladorPagamento:
 
