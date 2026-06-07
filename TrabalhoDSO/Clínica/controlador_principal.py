@@ -1,11 +1,11 @@
-from controladorPaciente import ControladorPaciente
-from controladorProfissional import ControladorProfissional
-from controladorClinica import ControladorClinica
-from controladorTipoAtendimento import ControladorTipoAtendimento
-from controladorAtendimento import ControladorAtendimento
-from controladorPagamento import ControladorPagamento
-from controladorProcedimento import ControladorProcedimento
-from controladorRelatorio import ControladorRelatorio
+from controlador_paciente import ControladorPaciente
+from controlador_profissional import ControladorProfissional
+from controlador_clinica import ControladorClinica
+from controlador_tipoatendimento import ControladorTipoAtendimento
+from controlador_atendimento import ControladorAtendimento
+from controlador_pagamento import ControladorPagamento
+from controlador_procedimento import ControladorProcedimento
+from controlador_relatorio import ControladorRelatorio
 
 class ControladorPrincipal:
 
