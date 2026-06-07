@@ -1,4 +1,4 @@
-from procedimento import Procedimento
+from modelos.procedimento import Procedimento
 
 class ControladorProcedimento:
 
