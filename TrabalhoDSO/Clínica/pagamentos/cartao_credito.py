@@ -1,61 +1,60 @@
-from Pagamento import Pagamento
+from pagamento import Pagamento
 
 class CartaoCredito(Pagamento):
 
     def __init__(
         self,
-        data,
+        data_pagamento,
+        atendimento,
+        paciente,
         valor_pago,
-        numero_cartao: str,
-        bandeira: str
+        numero,
+        bandeira
     ):
 
-        super().__init__(data, valor_pago)
+        super().__init__(
+            data_pagamento,
+            atendimento,
+            paciente,
+            valor_pago
+        )
 
-        if numero_cartao.strip() == "":
-            raise ValueError("Número do cartão inválido.")
+        self.numero = numero
+        self.bandeira = bandeira
 
-        if bandeira.strip() == "":
-            raise ValueError("Bandeira inválida.")
+    @property
+    def numero(self):
+        return self.__numero
 
-        self.__numero_cartao = numero_cartao
-        self.__bandeira = bandeira
+    @numero.setter
+    def numero(self, novo_numero):
 
-    # GETTERS
+        if not novo_numero.strip():
+            raise ValueError(
+                "Número do cartão inválido."
+            )
 
-    def get_numero_cartao(self):
-        return self.__numero_cartao
+        self.__numero = novo_numero
 
-    def get_bandeira(self):
+    @property
+    def bandeira(self):
         return self.__bandeira
 
-    # SETTERS
+    @bandeira.setter
+    def bandeira(self, nova_bandeira):
 
-    def set_numero_cartao(self, numero_cartao: str):
+        if not nova_bandeira.strip():
+            raise ValueError(
+                "Bandeira inválida."
+            )
 
-        if numero_cartao.strip() == "":
-            raise ValueError("Número inválido.")
+        self.__bandeira = nova_bandeira
 
-        self.__numero_cartao = numero_cartao
+    def validar_pagamento(self):
 
-    def set_bandeira(self, bandeira: str):
-
-        if bandeira.strip() == "":
-            raise ValueError("Bandeira inválida.")
-
-        self.__bandeira = bandeira
-
-    def tipo_pagamento(self):
-        return "Cartão de Crédito"
-
-    def validar(self):
-
-        super().validar()
-
-        if self.__numero_cartao.strip() == "":
-            raise ValueError("Número inválido.")
-
-        if self.__bandeira.strip() == "":
-            raise ValueError("Bandeira inválida.")
+        if len(self.numero) < 12:
+            raise ValueError(
+                "Número do cartão inválido."
+            )
 
         return True
