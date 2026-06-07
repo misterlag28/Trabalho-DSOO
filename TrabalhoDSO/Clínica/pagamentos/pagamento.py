@@ -1,54 +1,74 @@
 from abc import ABC, abstractmethod
-from datetime import date
-
 
 class Pagamento(ABC):
 
-    def __init__(self, data: date, valor_pago: float):
+    def __init__(
+        self,
+        data_pagamento,
+        atendimento,
+        paciente,
+        valor_pago
+    ):
 
-        if valor_pago <= 0:
-            raise ValueError("Valor pago deve ser maior que zero.")
+        self.data = data_pagamento
+        self.atendimento = atendimento
+        self.paciente = paciente
+        self.valor_pago = valor_pago
 
-        self.__data = data
-        self.__valor_pago = valor_pago
-
-        self.atendimento = None
-        self.paciente = None
-
-    # GETTERS
-
-    def get_data(self):
+    @property
+    def data(self):
         return self.__data
 
-    def get_valor_pago(self):
+    @data.setter
+    def data(self, nova_data):
+        self.__data = nova_data
+
+    @property
+    def atendimento(self):
+        return self.__atendimento
+
+    @atendimento.setter
+    def atendimento(self, novo_atendimento):
+        self.__atendimento = novo_atendimento
+
+    @property
+    def paciente(self):
+        return self.__paciente
+
+    @paciente.setter
+    def paciente(self, novo_paciente):
+        self.__paciente = novo_paciente
+
+    @property
+    def valor_pago(self):
         return self.__valor_pago
 
-    # SETTERS
+    @valor_pago.setter
+    def valor_pago(self, novo_valor):
 
-    def set_data(self, data: date):
-        self.__data = data
+        if novo_valor <= 0:
+            raise ValueError(
+                "O valor pago deve ser maior que zero."
+            )
 
-    def set_valor_pago(self, valor_pago: float):
+        self.__valor_pago = novo_valor
 
-        if valor_pago <= 0:
-            raise ValueError("Valor inválido.")
+    def validar_data_pagamento(self):
 
-        self.__valor_pago = valor_pago
+        if self.data > self.atendimento.data:
+            raise ValueError(
+                "O pagamento não pode ser realizado após a data do atendimento."
+            )
+
+        return True
 
     @abstractmethod
-    def tipo_pagamento(self):
+    def validar_pagamento(self):
         pass
 
-    def calcular_valor_restante(self):
+    def registrar_pagamento(self):
 
-        if self.atendimento is None:
-            raise ValueError("Pagamento sem atendimento associado.")
-
-        return self.atendimento.get_valor() - self.__valor_pago
-
-    def validar(self):
-
-        if self.__valor_pago <= 0:
-            raise ValueError("Valor inválido.")
+        self.validar_data_pagamento()
+        self.validar_pagamento()
 
         return True
