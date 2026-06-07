@@ -1,4 +1,5 @@
-from controladorPrincipal import ControladorPrincipal
+from controlador_principal import ControladorPrincipal
 
-controlador = ControladorPrincipal()
-controlador.iniciar()
+if __name__ == "__main__":
+    controlador = ControladorPrincipal()
+    controlador.iniciar()
