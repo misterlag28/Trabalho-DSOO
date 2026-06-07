@@ -1,43 +1,44 @@
-from Pagamento import Pagamento
+from pagamento import Pagamento
 
 class Pix(Pagamento):
 
     def __init__(
         self,
-        data,
+        data_pagamento,
+        atendimento,
+        paciente,
         valor_pago,
-        cpf_pagador: str
+        cpf_pagante
     ):
 
-        super().__init__(data, valor_pago)
+        super().__init__(
+            data_pagamento,
+            atendimento,
+            paciente,
+            valor_pago
+        )
 
-        if len(cpf_pagador) != 11:
-            raise ValueError("CPF inválido.")
+        self.cpf_pagante = cpf_pagante
 
-        self.__cpf_pagador = cpf_pagador
+    @property
+    def cpf_pagante(self):
+        return self.__cpf_pagante
 
-    # GETTER
+    @cpf_pagante.setter
+    def cpf_pagante(self, cpf):
 
-    def get_cpf_pagador(self):
-        return self.__cpf_pagador
+        if not cpf.strip():
+            raise ValueError(
+                "CPF inválido."
+            )
 
-    # SETTER
+        self.__cpf_pagante = cpf
 
-    def set_cpf_pagador(self, cpf_pagador: str):
+    def validar_pagamento(self):
 
-        if len(cpf_pagador) != 11:
-            raise ValueError("CPF inválido.")
-
-        self.__cpf_pagador = cpf_pagador
-
-    def tipo_pagamento(self):
-        return "PIX"
-
-    def validar(self):
-
-        super().validar()
-
-        if len(self.__cpf_pagador) != 11:
-            raise ValueError("CPF inválido.")
+        if len(self.cpf_pagante) != 11:
+            raise ValueError(
+                "CPF do pagante inválido."
+            )
 
         return True
