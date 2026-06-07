@@ -1,4 +1,4 @@
-from clinica import Clinica
+from modelos.clinica import Clinica
 from datetime import time
 
 class ControladorClinica:
