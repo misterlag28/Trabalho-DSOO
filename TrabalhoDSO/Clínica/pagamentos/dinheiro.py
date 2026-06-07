@@ -1,46 +1,55 @@
-from Pagamento import Pagamento
-
+from pagamento import Pagamento
 
 class Dinheiro(Pagamento):
 
     def __init__(
         self,
-        data,
-        valor_pago: float,
-        valor_recebido: float
+        data_pagamento,
+        atendimento,
+        paciente,
+        valor_pago,
+        valor_recebido
     ):
 
-        super().__init__(data, valor_pago)
+        super().__init__(
+            data_pagamento,
+            atendimento,
+            paciente,
+            valor_pago
+        )
 
-        if valor_recebido < valor_pago:
-            raise ValueError(
-                "Valor recebido menor que o valor do pagamento."
-            )
+        self.valor_recebido = valor_recebido
 
-        self.__valor_recebido = valor_recebido
-
-    # GETTER
-
-    def get_valor_recebido(self):
+    @property
+    def valor_recebido(self):
         return self.__valor_recebido
 
-    # SETTER
+    @valor_recebido.setter
+    def valor_recebido(self, valor):
 
-    def set_valor_recebido(self, valor_recebido):
-
-        if valor_recebido < self.get_valor_pago():
+        if valor <= 0:
             raise ValueError(
-                "Valor recebido insuficiente."
+                "Valor recebido inválido."
             )
 
-        self.__valor_recebido = valor_recebido
+        self.__valor_recebido = valor
+
+    @property
+    def troco(self):
+        return self.calcular_troco()
 
     def calcular_troco(self):
 
         return (
-            self.__valor_recebido
-            - self.get_valor_pago()
+            self.valor_recebido
+            - self.valor_pago
         )
 
-    def tipo_pagamento(self):
-        return "Dinheiro"
+    def validar_pagamento(self):
+
+        if self.valor_recebido < self.valor_pago:
+            raise ValueError(
+                "Valor recebido insuficiente."
+            )
+
+        return True
