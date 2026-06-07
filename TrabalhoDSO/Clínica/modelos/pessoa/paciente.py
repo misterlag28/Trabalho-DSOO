@@ -1,4 +1,4 @@
-from Pessoa import Pessoa
+from modelos.pessoa.pessoa import Pessoa
 
 
 class Paciente(Pessoa):
@@ -14,17 +14,18 @@ class Paciente(Pessoa):
 
         self.__idade = idade
 
-        # RELAÇÕES
         self.atendimentos = []
         self.pagamentos = []
 
     def tipo_pessoa(self):
         return "Paciente"
 
-    # GETTERS
-    def get_idade(self):
+    @property
+    def idade(self):
         return self.__idade
 
-    # SETTERS
-    def set_idade(self, idade: int):
+    @idade.setter
+    def idade(self, idade: int):
+        if not isinstance(idade, int) or idade < 0 or idade > 150:
+            raise ValueError("Idade inválida. Deve ser um número inteiro entre 0 e 150.")
         self.__idade = idade

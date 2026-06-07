@@ -1,4 +1,4 @@
-from Pessoa import Pessoa
+from modelos.pessoa.pessoa import Pessoa
 
 
 class ProfissionalSaude(Pessoa):
@@ -16,23 +16,23 @@ class ProfissionalSaude(Pessoa):
         self.__especialidade = especialidade
         self.__registro_profissional = registro_profissional
 
-        # RELAÇÕES
         self.atendimentos = []
         self.procedimentos = []
 
     def tipo_pessoa(self):
         return "Profissional de Saúde"
 
-    # GETTERS
-    def get_especialidade(self):
+    @property
+    def especialidade(self):
         return self.__especialidade
-
-    def get_registro_profissional(self):
+    @property
+    def registro_profissional(self):
         return self.__registro_profissional
 
-    # SETTERS
-    def set_especialidade(self, especialidade: str):
+    @especialidade.setter
+    def especialidade(self, especialidade: str):
         self.__especialidade = especialidade
 
-    def set_registro_profissional(self, registro_profissional: str):
+    @registro_profissional.setter
+    def registro_profissional(self, registro_profissional: str):
         self.__registro_profissional = registro_profissional

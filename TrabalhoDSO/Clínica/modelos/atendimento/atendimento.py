@@ -1,10 +1,10 @@
 from datetime import date, time
 
 from modelos.clinica import Clinica
-from modelos.paciente import Paciente
-from modelos.profissional_saude import ProfissionalSaude
-from modelos.procedimento import Procedimento
-from enums.tipo_atendimento import TipoAtendimento
+from modelos.pessoa.paciente import Paciente
+from modelos.pessoa.profissional_saude import ProfissionalSaude
+from modelos.atendimento.procedimento import Procedimento
+from modelos.enum.tipo_atendimento import TipoAtendimento
 
 
 class Atendimento:
@@ -32,6 +32,46 @@ class Atendimento:
 
         self.__procedimentos = []
         self.__pagamentos = []
+
+    @property
+    def lista_procedimentos(self):
+        return self.__procedimentos
+
+    @property
+    def lista_pagamentos(self):
+        return self.__pagamentos
+
+    def adicionar_procedimento(self, procedimento):
+        self.__procedimentos.append(procedimento)
+
+    def adicionar_pagamento(self, pagamento):
+        self.__pagamentos.append(pagamento)
+
+    def calcular_valor_total(self):
+        total = self.__valor + sum(p.custo for p in self.__procedimentos)
+        return total
+
+    def exibir_dados(self):
+        return (
+            f"Data: {self.data}\n"
+            f"Horário: {self.horario_inicio.strftime('%H:%M')} - {self.horario_fim.strftime('%H:%M')}\n"
+            f"Valor base: R$ {self.valor:.2f}\n"
+            f"Paciente: {self.__paciente.nome}\n"
+            f"Profissional: {self.__profissional.nome}\n"
+            f"Clínica: {self.__clinica.nome}"
+        )
+
+    @property
+    def paciente(self):
+        return self.__paciente
+
+    @property
+    def profissional(self):
+        return self.__profissional
+
+    @property
+    def clinica(self):
+        return self.__clinica
 
     @property
     def data(self):
