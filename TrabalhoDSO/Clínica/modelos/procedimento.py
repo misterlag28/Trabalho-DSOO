@@ -1,53 +1,85 @@
-from modelos.profissional_saude import ProfissionalSaude
+from profissional_saude import ProfissionalSaude
 
 class Procedimento:
 
-    def __init__(self, descricao: str, custo: float):
+    def __init__(
+        self,
+        nome,
+        descricao,
+        custo,
+        profissional
+    ):
 
-        if descricao.strip() == "":
-            raise ValueError("Descrição inválida.")
+        self.nome = nome
+        self.descricao = descricao
+        self.custo = custo
+        self.profissional = profissional
 
-        if custo < 0:
-            raise ValueError("O custo não pode ser negativo.")
+    @property
+    def nome(self):
+        return self.__nome
 
-        self.__descricao = descricao
-        self.__custo = custo
+    @nome.setter
+    def nome(self, novo_nome):
 
-        self.profissional = None
-        self.atendimentos = []
+        if not novo_nome.strip():
+            raise ValueError(
+                "Nome inválido."
+            )
 
-    # GETTERS
+        self.__nome = novo_nome
 
-    def get_descricao(self):
+    @property
+    def descricao(self):
         return self.__descricao
 
-    def get_custo(self):
+    @descricao.setter
+    def descricao(self, nova_descricao):
+
+        if not nova_descricao.strip():
+            raise ValueError(
+                "Descrição inválida."
+            )
+
+        self.__descricao = nova_descricao
+
+    @property
+    def custo(self):
         return self.__custo
 
-    # SETTERS
+    @custo.setter
+    def custo(self, novo_custo):
 
-    def set_descricao(self, descricao: str):
+        if novo_custo <= 0:
+            raise ValueError(
+                "O custo deve ser maior que zero."
+            )
 
-        if descricao.strip() == "":
-            raise ValueError("Descrição inválida.")
+        self.__custo = novo_custo
 
-        self.__descricao = descricao
+    @property
+    def profissional(self):
+        return self.__profissional
 
-    def set_custo(self, custo: float):
+    @profissional.setter
+    def profissional(self, novo_profissional):
 
-        if custo < 0:
-            raise ValueError("O custo não pode ser negativo.")
+        self.__profissional = novo_profissional
 
-        self.__custo = custo
+    def validar_procedimento(self):
 
-    # MÉTODO
-
-    def validar(self):
-
-        if self.__descricao.strip() == "":
-            raise ValueError("Descrição inválida.")
-
-        if self.__custo < 0:
-            raise ValueError("Custo inválido.")
+        if self.custo <= 0:
+            raise ValueError(
+                "Custo inválido."
+            )
 
         return True
+
+    def exibir_dados(self):
+
+        return (
+            f"Nome: {self.nome}\n"
+            f"Descrição: {self.descricao}\n"
+            f"Custo: R$ {self.custo:.2f}\n"
+            f"Profissional: {self.profissional.nome}"
+        )
