@@ -45,6 +45,7 @@ class ViewClinica:
 
         elif opcao == "4":
             print("Funcionalidade de tipos de atendimento.")
+            print("Tipos de atendimento disponíveis: Consulta, Exame, Procedimento")
 
         elif opcao == "5":
             ViewAtendimento(self.controlador_atendimento, self.controlador_clinica, self.controlador_pessoa).abrir_menu()
