@@ -9,17 +9,10 @@ from controladores.controlador_pagamento import ControladorPagamento
 from controladores.controlador_procedimento import ControladorProcedimento
 from controladores.controlador_relatorio import ControladorRelatorio
 
-
-clinicas: list[Clinica] = []
-profissionais: list[ProfissionalSaude] = []
-pacientes: list[Paciente] = []
-atendimentos: list = []
-
-
 def main():
-    controlador_pessoa = ControladorPessoa(pacientes=pacientes, profissionais=profissionais)
-    controlador_clinica = ControladorClinica(clinicas=clinicas)
-    controlador_atendimento = ControladorAtendimento(atendimentos=atendimentos)
+    controlador_pessoa = ControladorPessoa()
+    controlador_clinica = ControladorClinica()
+    controlador_atendimento = ControladorAtendimento()
     controlador_pagamento = ControladorPagamento()
     controlador_procedimento = ControladorProcedimento()
     controlador_relatorio = ControladorRelatorio()

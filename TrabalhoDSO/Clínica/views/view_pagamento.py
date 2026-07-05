@@ -48,7 +48,7 @@ class ViewPagamento:
                 tipo = input("Opção: ")
                 try:
                     if tipo == "1":
-                        valor_recebido = float(input("Valor recebido: "))
+                        valor_recebido = float(input("Valor recebido pelo cliente (para calcular troco): "))
                         pagamento = Dinheiro(data_pagamento, atendimento, atendimento.paciente, valor_pago, valor_recebido)
                     elif tipo == "2":
                         cpf = input("CPF do pagante: ")
@@ -56,7 +56,8 @@ class ViewPagamento:
                     elif tipo == "3":
                         numero = input("Número do cartão: ")
                         bandeira = input("Bandeira: ")
-                        pagamento = CartaoCredito(data_pagamento, atendimento, atendimento.paciente, valor_pago, numero, bandeira)
+                        parcelas = int(input("Quantidade de parcelas: "))
+                        pagamento = CartaoCredito(data_pagamento, atendimento, atendimento.paciente, valor_pago, numero, bandeira, parcelas)
                     else:
                         print("Opção inválida.")
                         continue

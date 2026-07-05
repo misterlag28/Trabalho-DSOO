@@ -109,7 +109,7 @@ class ViewProcedimento:
                     print("Custo inválido.")
                     continue
                 try:
-                    self.controlador.alterar_procedimento(procedimento, nome=novo_nome if novo_nome else None, descricao=nova_desc if nova_desc else None, custo=novo_custo)
+                    self.controlador.alterar_procedimento(atendimento, procedimento, nome=novo_nome if novo_nome else None, descricao=nova_desc if nova_desc else None, custo=novo_custo)
                     print("Procedimento alterado com sucesso.")
                 except ValueError as erro:
                     print(f"Erro: {erro}")

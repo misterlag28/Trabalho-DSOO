@@ -14,7 +14,8 @@ class ViewAtendimento:
             print("\n=== ATENDIMENTOS ===")
             print("1 - Cadastrar")
             print("2 - Listar")
-            print("3 - Excluir")
+            print("3 - Alterar")
+            print("4 - Excluir")
             print("0 - Voltar")
             opcao = input("Opção: ")
             if opcao == "1":
@@ -32,6 +33,10 @@ class ViewAtendimento:
                     paciente = pacientes[pidx]
                 except ValueError:
                     print("Escolha inválida.")
+                    continue
+                
+                if paciente.idade < 18:
+                    print("Erro ao cadastrar atendimento: Paciente menor de 18 anos não pode realizar atendimento")
                     continue
                 profissionais = self.controlador_pessoa.listar_profissionais()
                 if not profissionais:
@@ -76,6 +81,15 @@ class ViewAtendimento:
                     horario_inicio = time(hi, mi)
                     horario_fim = time(hf, mf)
                     
+                    if horario_fim <= horario_inicio:
+                        print("Erro ao cadastrar atendimento: Horário fim deve ser maior que horário de início")
+                        continue
+                        
+                    if clinica.abertura and clinica.fechamento:
+                        if horario_inicio < clinica.abertura or horario_fim > clinica.fechamento:
+                            print("Erro ao cadastrar atendimento: Horário do atendimento fora do horário de funcionamento da clínica")
+                            continue
+                    
                     valor = float(input("Valor base do atendimento: "))
                     if valor <= 0:
                         print("Erro: Valor deve ser positivo.")
@@ -110,6 +124,83 @@ class ViewAtendimento:
                 for i, a in enumerate(atendimentos):
                     print(f"{i} - {a.exibir_dados()}")
             elif opcao == "3":
+                atendimentos = self.controlador_atendimento.listar_atendimentos()
+                if not atendimentos:
+                    print("Nenhum atendimento cadastrado.")
+                    continue
+                for i, a in enumerate(atendimentos):
+                    print(f"{i} - {a.exibir_dados()}")
+                try:
+                    idx = int(input("Escolha o atendimento para alterar: "))
+                except ValueError:
+                    print("Escolha inválida.")
+                    continue
+                atendimento = self.controlador_atendimento.escolher_atendimento_por_index(idx)
+                if atendimento is None:
+                    print("Atendimento inválido.")
+                    continue
+                try:
+                    ano_str = input("Novo Ano (YYYY) (enter para manter): ")
+                    if ano_str:
+                        mes = int(input("Novo Mês (MM): "))
+                        dia = int(input("Novo Dia (DD): "))
+                        nova_data = date(int(ano_str), mes, dia)
+                    else:
+                        nova_data = None
+                    hi_str = input("Nova Hora início (HH) (enter para manter): ")
+                    if hi_str:
+                        mi = int(input("Novo Minuto início (MM): "))
+                        novo_horario_inicio = time(int(hi_str), mi)
+                    else:
+                        novo_horario_inicio = None
+                    hf_str = input("Nova Hora fim (HH) (enter para manter): ")
+                    if hf_str:
+                        mf = int(input("Novo Minuto fim (MM): "))
+                        novo_horario_fim = time(int(hf_str), mf)
+                    else:
+                        novo_horario_fim = None
+                    valor_str = input("Novo Valor base (enter para manter): ")
+                    if valor_str:
+                        novo_valor = float(valor_str)
+                        if novo_valor <= 0:
+                            print("Erro: Valor deve ser positivo.")
+                            continue
+                    else:
+                        novo_valor = None
+                except ValueError as e:
+                    print(f"Erro: Entrada inválida - {e}")
+                    continue
+                
+                print("Deseja alterar o tipo de atendimento? (s/n)")
+                if input().lower() == 's':
+                    print("Tipo de atendimento:")
+                    for i, t in enumerate(TipoAtendimento):
+                        print(f"{i} - {t.value}")
+                    try:
+                        tidx = int(input("Escolha o tipo: "))
+                        tipos = list(TipoAtendimento)
+                        if tidx < 0 or tidx >= len(tipos):
+                            print("Tipo inválido.")
+                            continue
+                        novo_tipo = tipos[tidx]
+                    except ValueError:
+                        print("Escolha inválida.")
+                        continue
+                else:
+                    novo_tipo = None
+                try:
+                    self.controlador_atendimento.alterar_atendimento(
+                        atendimento,
+                        data=nova_data,
+                        horario_inicio=novo_horario_inicio,
+                        horario_fim=novo_horario_fim,
+                        valor=novo_valor,
+                        tipo=novo_tipo
+                    )
+                    print("Atendimento alterado com sucesso.")
+                except ValueError as erro:
+                    print(f"Erro ao alterar atendimento: {erro}")
+            elif opcao == "4":
                 atendimentos = self.controlador_atendimento.listar_atendimentos()
                 if not atendimentos:
                     print("Nenhum atendimento cadastrado.")

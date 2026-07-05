@@ -1,11 +1,16 @@
 from modelos.pessoa.profissional_saude import ProfissionalSaude
 from modelos.pessoa.paciente import Paciente
-
+from daos.paciente_dao import PacienteDAO
+from daos.profissional_dao import ProfissionalDAO
 
 class ControladorPessoa:
-    def __init__(self, pacientes=None, profissionais=None):
-        self._pacientes: list[Paciente] = pacientes if pacientes is not None else []
-        self._profissionais: list[ProfissionalSaude] = profissionais if profissionais is not None else []
+    def __init__(self):
+        self.__paciente_dao = PacienteDAO()
+        self.__profissional_dao = ProfissionalDAO()
+
+    def limpar_dados(self):
+        self.__paciente_dao.clear()
+        self.__profissional_dao.clear()
 
     # Paciente CRUD
     def cadastrar_paciente(self, paciente: Paciente) -> bool:
@@ -20,15 +25,14 @@ class ControladorPessoa:
             raise ValueError("Telefone deve conter pelo menos 10 dígitos")
         
         # Verificar CPF duplicado
-        for p in self._pacientes:
-            if p.cpf == paciente.cpf:
-                raise ValueError(f"Paciente com CPF {paciente.cpf} já cadastrado")
+        if self.__paciente_dao.get(paciente.cpf) is not None:
+            raise ValueError(f"Paciente com CPF {paciente.cpf} já cadastrado")
         
-        self._pacientes.append(paciente)
+        self.__paciente_dao.add(paciente)
         return True
 
     def listar_pacientes(self) -> list:
-        return self._pacientes
+        return self.__paciente_dao.get_all()
 
     def editar_paciente(self, nome_mudado: str, novo_paciente: Paciente) -> bool:
         # Validações de negócio
@@ -41,16 +45,18 @@ class ControladorPessoa:
         if not novo_paciente.celular or len(novo_paciente.celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")) < 10:
             raise ValueError("Telefone deve conter pelo menos 10 dígitos")
         
-        for idx, paciente in enumerate(self._pacientes):
+        for paciente in self.__paciente_dao.get_all():
             if paciente.nome == nome_mudado:
-                self._pacientes[idx] = novo_paciente
+                if paciente.cpf != novo_paciente.cpf:
+                    self.__paciente_dao.remove(paciente.cpf)
+                self.__paciente_dao.add(novo_paciente)
                 return True
         return False
 
     def remover_paciente(self, nome: str) -> bool:
-        for paciente in self._pacientes:
+        for paciente in self.__paciente_dao.get_all():
             if paciente.nome == nome:
-                self._pacientes.remove(paciente)
+                self.__paciente_dao.remove(paciente.cpf)
                 return True
         return False
 
@@ -69,15 +75,14 @@ class ControladorPessoa:
             raise ValueError("Registro profissional é obrigatório")
         
         # Verificar CPF duplicado
-        for p in self._profissionais:
-            if p.cpf == profissional.cpf:
-                raise ValueError(f"Profissional com CPF {profissional.cpf} já cadastrado")
+        if self.__profissional_dao.get(profissional.cpf) is not None:
+            raise ValueError(f"Profissional com CPF {profissional.cpf} já cadastrado")
         
-        self._profissionais.append(profissional)
+        self.__profissional_dao.add(profissional)
         return True
 
     def listar_profissionais(self) -> list:
-        return self._profissionais
+        return self.__profissional_dao.get_all()
 
     def editar_profissional(self, nome_mudado: str, novo_profissional: ProfissionalSaude) -> bool:
         # Validações de negócio
@@ -92,15 +97,17 @@ class ControladorPessoa:
         if not novo_profissional.registro_profissional or not novo_profissional.registro_profissional.strip():
             raise ValueError("Registro profissional é obrigatório")
         
-        for idx, profissional in enumerate(self._profissionais):
+        for profissional in self.__profissional_dao.get_all():
             if profissional.nome == nome_mudado:
-                self._profissionais[idx] = novo_profissional
+                if profissional.cpf != novo_profissional.cpf:
+                    self.__profissional_dao.remove(profissional.cpf)
+                self.__profissional_dao.add(novo_profissional)
                 return True
         return False
 
     def remover_profissional(self, nome: str) -> bool:
-        for profissional in self._profissionais:
+        for profissional in self.__profissional_dao.get_all():
             if profissional.nome == nome:
-                self._profissionais.remove(profissional)
+                self.__profissional_dao.remove(profissional.cpf)
                 return True
         return False

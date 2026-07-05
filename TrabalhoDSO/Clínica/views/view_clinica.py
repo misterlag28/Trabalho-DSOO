@@ -24,6 +24,7 @@ class ViewClinica:
         print("6 - Pagamentos")
         print("7 - Procedimentos")
         print("8 - Relatórios")
+        print("9 - Limpar Dados da Persistência")
         print("0 - Sair")
 
     def obter_opcao(self):
@@ -58,6 +59,15 @@ class ViewClinica:
 
         elif opcao == "8":
             ViewRelatorio(self.controlador_relatorio).abrir_menu(self.controlador_atendimento)
+
+        elif opcao == "9":
+            if self.controlador_pessoa:
+                self.controlador_pessoa.limpar_dados()
+            if self.controlador_clinica:
+                self.controlador_clinica.limpar_dados()
+            if self.controlador_atendimento:
+                self.controlador_atendimento.limpar_dados()
+            print("Dados da persistência foram limpos com sucesso!")
 
         elif opcao == "0":
             print("Sistema encerrado.")

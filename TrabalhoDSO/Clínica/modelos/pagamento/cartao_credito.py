@@ -9,7 +9,8 @@ class CartaoCredito(Pagamento):
         paciente,
         valor_pago,
         numero,
-        bandeira
+        bandeira,
+        parcelas=1
     ):
 
         super().__init__(
@@ -21,6 +22,7 @@ class CartaoCredito(Pagamento):
 
         self.numero = numero
         self.bandeira = bandeira
+        self.parcelas = parcelas
 
     @property
     def numero(self):
@@ -58,3 +60,13 @@ class CartaoCredito(Pagamento):
             )
 
         return True
+
+    @property
+    def parcelas(self):
+        return self.__parcelas
+
+    @parcelas.setter
+    def parcelas(self, nova_parcela):
+        if nova_parcela <= 0:
+            raise ValueError("O número de parcelas deve ser maior que zero.")
+        self.__parcelas = nova_parcela

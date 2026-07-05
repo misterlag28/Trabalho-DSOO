@@ -1,3 +1,4 @@
+import uuid
 from datetime import date, time
 
 from modelos.clinica import Clinica
@@ -20,6 +21,7 @@ class Atendimento:
         clinica: Clinica,
         tipo: TipoAtendimento
     ):
+        self.__id = str(uuid.uuid4())
         self.__data = data
         self.__horario_inicio = horario_inicio
         self.__horario_fim = horario_fim
@@ -98,6 +100,14 @@ class Atendimento:
         self.__horario_fim = horario_fim
 
     @property
+    def tipo(self):
+        return self.__tipo
+
+    @tipo.setter
+    def tipo(self, tipo: TipoAtendimento):
+        self.__tipo = tipo
+    
+    @property
     def valor(self):
         return self.__valor
 
@@ -107,4 +117,8 @@ class Atendimento:
 
     def calcular_valor_restante(self):
         total_pago = sum(p.valor_pago for p in self.__pagamentos)
-        return self.__valor - total_pago
+        return self.calcular_valor_total() - total_pago
+
+    @property
+    def id(self):
+        return self.__id
