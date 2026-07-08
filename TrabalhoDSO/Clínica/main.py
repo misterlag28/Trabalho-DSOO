@@ -8,8 +8,11 @@ from controladores.controlador_atendimento import ControladorAtendimento
 from controladores.controlador_pagamento import ControladorPagamento
 from controladores.controlador_procedimento import ControladorProcedimento
 from controladores.controlador_relatorio import ControladorRelatorio
+import FreeSimpleGUI as sg
 
 def main():
+    sg.set_options(font=("", 14))
+    
     controlador_pessoa = ControladorPessoa()
     controlador_clinica = ControladorClinica()
     controlador_atendimento = ControladorAtendimento()
