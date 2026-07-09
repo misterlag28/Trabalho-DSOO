@@ -15,17 +15,14 @@ class ControladorPagamento:
             if pagamento.valor_recebido >= restante:
                 pagamento.valor_pago = restante
                 troco = pagamento.valor_recebido - restante
-                print(f"Troco de {troco}")
             else:
                 pagamento.valor_pago = pagamento.valor_recebido
                 falta = restante - pagamento.valor_pago
-                print(f"Falta pagar {falta}")
         else:
             if pagamento.valor_pago > restante:
                 raise ValueError("Não é permitido pagar um valor maior que o restante usando este método de pagamento.")
             elif pagamento.valor_pago < restante:
                 falta = restante - pagamento.valor_pago
-                print(f"Falta pagar {falta}")
 
         pagamento.registrar_pagamento()
         pagamento.atendimento.adicionar_pagamento(pagamento)
